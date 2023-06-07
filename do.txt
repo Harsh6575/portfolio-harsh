@@ -1,0 +1,2 @@
+npx create-next-app@latest portfolio-harsh --tailwind
+npm create sanity@latest -- --coupon sonny2022
