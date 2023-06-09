@@ -1,38 +1,28 @@
 "use client";
-import React from "react";
+
+import React, { useEffect, useState } from "react";
 import { SectionWrapper } from "../hoc";
 import { groq } from "next-sanity";
 import Link from "next/link";
 import { client } from "../../sanity/lib/client";
 import { styles } from "../styles";
-import { urlForImage } from "../../sanity/lib/image";
-import Image from "next/image";
 
 const query = groq`*[_type == "socialMedia"] {
   _createdAt,
-    url,icon,name
+  url,
+  name
 } | order(_createdAt asc)`;
 
-const SocialMediaCard = ({ index, name, icon, url }) => {
-  icon = urlForImage(icon).url();
-
+const SocialMediaCard = ({ name, url }) => {
   return (
-    <div className="xs:w-[250px] w-full">
+    <div className="w-[250px]">
       <div className="w-full green-pink-gradient p-[1px] rounded-[20px] shadow-card">
-        <Link
-          href={url}
-          options={{
-            max: 45,
-            scale: 1,
-            speed: 450,
-          }}
-          className="bg-newBlue rounded-[20px] py-5 px-12 min-h-[280px] flex justify-evenly items-center flex-col"
-        >
-          <Image src={icon} alt={name} className="w-32 h-32 object-contain" />
-
-          <h3 className="text-white text-[20px] font-bold text-center">
-            {name}
-          </h3>
+        <Link href={url} options={{ max: 45, scale: 1, speed: 450 }}>
+          <div className="bg-newBlue rounded-[20px] py-5 px-12 min-h-80px] flex justify-evenly items-center flex-col">
+            <h3 className="text-white text-[20px] font-bold text-center">
+              {name}
+            </h3>
+          </div>
         </Link>
       </div>
     </div>
@@ -40,26 +30,27 @@ const SocialMediaCard = ({ index, name, icon, url }) => {
 };
 
 const Contact = () => {
-  const [socialMedia, setSocialMedia] = React.useState([]);
+  const [socialMedia, setSocialMedia] = useState([]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const fetchSocialMedia = async () => {
       try {
         const response = await client.fetch(query);
         if (response.length === 0) {
           throw new Error("No data found");
         }
-
         setSocialMedia(response);
       } catch (error) {
         console.error(error);
       }
     };
 
-    setInterval(fetchSocialMedia, 1000);
+    const intervalId = setInterval(fetchSocialMedia, 1000);
 
-    fetchSocialMedia();
-  }, [socialMedia]);
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, []);
 
   return (
     <>
@@ -69,11 +60,7 @@ const Contact = () => {
       </div>
       <div className="mt-20 flex flex-wrap gap-10">
         {socialMedia.map((socialMedia, index) => (
-          <SocialMediaCard
-            key={socialMedia.name}
-            index={index}
-            {...socialMedia}
-          />
+          <SocialMediaCard key={socialMedia.name} {...socialMedia} />
         ))}
       </div>
     </>

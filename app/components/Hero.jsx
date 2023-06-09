@@ -1,29 +1,27 @@
 "use client";
-import React, { use, useEffect } from "react";
-import { styles } from "../styles";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { groq } from "next-sanity";
 import { client } from "../../sanity/lib/client";
+import { styles } from "../styles";
 
 const query = groq`*[_type == "hero"] {
   _createdAt,
-    title,
-    body[]{
-      children[]{
-    ...,
-    text,
+  title,
+  body[]{
+    children[]{
+      ...,
+      text,
       marks[]
-      }
     }
-} | order(_createdAt asc)
-`;
+  }
+} | order(_createdAt asc)`;
 
 const screenHeightThreshold = 500; // Set the screen height threshold in pixels
 
 const Hero = () => {
-  const [paragraphs, setParagraphs] = React.useState([]);
+  const [paragraphs, setParagraphs] = useState([]);
 
-  
   useEffect(() => {
     const applyVisibilityClass = () => {
       if (typeof window !== "undefined") {
@@ -62,7 +60,6 @@ const Hero = () => {
         }
 
         const paragraphs = response.map((hero) => {
-
           const markClassMap = {
             strong: "text-myPurple",
             underline: "text-myGreen",
@@ -118,9 +115,11 @@ const Hero = () => {
       }
     };
 
-    setInterval(fetchHero, 1000);
+    const intervalId = setInterval(fetchHero, 1000);
 
-    fetchHero();
+    return () => {
+      clearInterval(intervalId);
+    };
   }, [paragraphs]);
 
   return (

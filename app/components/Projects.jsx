@@ -1,10 +1,8 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { SectionWrapper } from "../hoc";
 import { Tilt } from "react-tilt";
-
 import Image from "next/image";
-
 import { styles } from "../styles";
 import { groq } from "next-sanity";
 import { client } from "../../sanity/lib/client";
@@ -18,11 +16,26 @@ const ProjectCard = ({
   name,
   description,
   tags,
-  image,
+  image: projectImage,
   source_code_link,
   live_demo_link,
 }) => {
-  image = urlForImage(image).url();
+  const image = urlForImage(projectImage).url();
+
+  useEffect(() => {
+    const handleImageError = () => {
+      // Handle error when the image fails to load
+      console.error("Failed to load project image:", projectImage);
+    };
+
+    const imgElement = document.createElement("img");
+    imgElement.src = image;
+    imgElement.addEventListener("error", handleImageError);
+
+    return () => {
+      imgElement.removeEventListener("error", handleImageError);
+    };
+  }, [image, projectImage]);
 
   return (
     <Tilt
@@ -65,12 +78,12 @@ const ProjectCard = ({
       </div>
       {tags && (
         <div className="mt-4 flex flex-wrap gap-2">
-          {tags.map((tag) => (
+          {tags.map(({ name, color }) => (
             <p
               key={`${name}-${tag.name}`}
-              className={`text-[14px] ${tag.color}`}
+              className={`text-[14px] ${color}`}
             >
-              #{tag.name}
+              #{name}
             </p>
           ))}
         </div>
@@ -82,7 +95,7 @@ const ProjectCard = ({
 const Projects = () => {
   const [projects, setProjects] = React.useState([]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const fetchProjects = async () => {
       try {
         const response = await client.fetch(query);
@@ -93,14 +106,16 @@ const Projects = () => {
 
         setProjects(response);
       } catch (error) {
-        console.error(error);
+        console.error("Failed to fetch projects:", error);
       }
     };
 
+    const intervalId = setInterval(fetchProjects, 1000);
 
-
-    fetchProjects();
-  }, [projects]);
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, []);
 
   return (
     <>

@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { SectionWrapper } from "../hoc";
 import { styles } from "../styles";
 import { groq } from "next-sanity";
@@ -7,18 +7,70 @@ import { client } from "../../sanity/lib/client";
 
 const query = groq`*[_type == "about"] {
   _createdAt,
-    title,
-    body[]{
-      children[]{
-    ...,
-    text,
+  title,
+  body[]{
+    children[]{
+      ...,
+      text,
       marks[]
-      }
     }
+  }
 } | order(_createdAt asc)`;
 
 const About = () => {
-  const [paragraphs, setParagraphs] = React.useState([]);
+  const [paragraphs, setParagraphs] = useState([]);
+
+  const generateParagraphs = useCallback((response) => {
+    const markClassMap = {
+      strong: "text-myPurple",
+      underline: "text-myGreen",
+      "strike-through": "text-myBlue",
+      em: "text-myRed",
+      code: "text-myEbony",
+      highlight: "text-myViolet",
+    };
+
+    return response.map((about) => {
+      const descriptionElements = about.body[0].children.map((child) => {
+        let className = "";
+
+        if (child._type === "span" && child.marks.length > 0) {
+          className = child.marks
+            .map((mark) => markClassMap[mark])
+            .filter((className) => !!className)
+            .join(" ");
+        }
+
+        return (
+          <span key={child._key} className={className}>
+            {child.text}
+          </span>
+        );
+      });
+
+      let currentParagraph = [];
+      const generatedParagraphs = [];
+
+      descriptionElements.forEach((element) => {
+        if (element.text === "\n") {
+          generatedParagraphs.push(
+            <p key={generatedParagraphs.length}>{currentParagraph}</p>
+          );
+          currentParagraph = [];
+        } else {
+          currentParagraph.push(element);
+        }
+      });
+
+      if (currentParagraph.length > 0) {
+        generatedParagraphs.push(
+          <p key={generatedParagraphs.length}>{currentParagraph}</p>
+        );
+      }
+
+      return generatedParagraphs;
+    });
+  }, []);
 
   useEffect(() => {
     const fetchAbout = async () => {
@@ -29,67 +81,20 @@ const About = () => {
           throw new Error("No data found");
         }
 
-        const paragraphs = response.map((about) => {
-          const markClassMap = {
-            strong: "text-myPurple",
-            underline: "text-myGreen",
-            "strike-through": "text-myBlue",
-            em: "text-myRed",
-            code: "text-myEbony",
-            highlight: "text-myViolet",
-          };
-
-          const descriptionElements = about.body[0].children.map((child) => {
-            let className = "";
-
-            if (child._type === "span" && child.marks.length > 0) {
-              className = child.marks
-                .map((mark) => markClassMap[mark])
-                .filter((className) => !!className)
-                .join(" ");
-            }
-
-            return (
-              <span key={child._key} className={className}>
-                {child.text}
-              </span>
-            );
-          });
-
-          let currentParagraph = [];
-          const generatedParagraphs = [];
-
-          descriptionElements.forEach((element) => {
-            if (element.text === "\n") {
-              generatedParagraphs.push(
-                <p key={generatedParagraphs.length}>{currentParagraph}</p>
-              );
-              currentParagraph = [];
-            } else {
-              currentParagraph.push(element);
-            }
-          });
-
-          if (currentParagraph.length > 0) {
-            generatedParagraphs.push(
-              <p key={generatedParagraphs.length}>{currentParagraph}</p>
-            );
-          }
-
-          return generatedParagraphs;
-        });
-
-        setParagraphs(paragraphs);
+        const generatedParagraphs = generateParagraphs(response);
+        setParagraphs(generatedParagraphs);
       } catch (error) {
         console.error("Error fetching navigation links:", error);
       }
     };
 
-    setInterval(fetchAbout, 1000);
+    const intervalId = setInterval(fetchAbout, 1000);
 
-    fetchAbout();
-  }, [paragraphs]);
-  
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [generateParagraphs]);
+
   return (
     <>
       <div>

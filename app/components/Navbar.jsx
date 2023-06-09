@@ -2,40 +2,37 @@
 import React, { useEffect, useState } from "react";
 import { styles } from "../styles";
 import Link from "next/link";
-import {logo,menu,close} from '../assets'
-
-
-import { groq } from "next-sanity";
-import {client} from '../../sanity/lib/client'
 import Image from "next/image";
+import { groq } from "next-sanity";
+import { client } from "../../sanity/lib/client";
+import { logo, menu, close } from "../assets";
 
-const query = groq `*[_type == "navLinks"]{
-  id,title,_createdAt
-} | order(_createdAt asc)
-`;
+const query = groq`*[_type == "navLinks"]{ id, title, _createdAt } | order(_createdAt asc)`;
 
 const Navbar = () => {
   const [active, setActive] = useState("");
   const [toggle, setToggle] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [navLinks, setNavLinks] = useState([]);
-  
+
   useEffect(() => {
-    
     const fetchNavLinks = async () => {
       try {
-        const response = await client.fetch(query); // Fetch data from Sanity
+        const response = await client.fetch(query);
         setNavLinks(response);
       } catch (error) {
-        console.error('Error fetching navigation links:', error);
+        console.error("Error fetching navigation links:", error);
       }
     };
 
-    setInterval(()=>{
-      fetchNavLinks();
-    },[1000])
-    
+    const intervalId = setInterval(fetchNavLinks, 1000);
 
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [navLinks]);
+
+  useEffect(() => {
     const handleScroll = () => {
       const scrollTop = window.scrollY;
       if (scrollTop > 100) {
@@ -47,7 +44,9 @@ const Navbar = () => {
 
     window.addEventListener("scroll", handleScroll);
 
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
   return (
@@ -68,12 +67,10 @@ const Navbar = () => {
           }}
         >
           <Image src={logo} alt="logo" className="w-9 h-9 object-contain" />
-          <p className="text-white text-[18px] font-bold cursor-pointer flex ">
-            Harsh {" "}
-            <span className="md:block hidden"> | Vansjaliya</span>
+          <p className="text-white text-[18px] font-bold cursor-pointer flex">
+            Harsh <span className="md:block hidden"> | Vansjaliya</span>
           </p>
         </Link>
-
         <ul className="list-none hidden lg:flex flex-row gap-10">
           {navLinks.map((nav) => (
             <li
@@ -96,28 +93,26 @@ const Navbar = () => {
             onClick={() => setToggle(!toggle)}
           />
 
-          <div
-            className={`${
-              !toggle ? "hidden" : "flex"
-            } p-6 black-gradient absolute top-20 right-0 mx-4 my-2 min-w-[140px] z-10 rounded-xl`}
-          >
-            <ul className="list-none flex justify-end items-start flex-1 flex-col gap-4">
-              {navLinks.map((nav) => (
-                <li
-                  key={nav.id}
-                  className={`font-poppins font-medium cursor-pointer text-[16px] ${
-                    active === nav.title ? "text-white" : "text-secondary"
-                  }`}
-                  onClick={() => {
-                    setToggle(!toggle);
-                    setActive(nav.title);
-                  }}
-                >
-                  <a href={`#${nav.id}`}>{nav.title}</a>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {toggle && (
+            <div className="p-6 black-gradient absolute top-20 right-0 mx-4 my-2 min-w-[140px] z-10 rounded-xl">
+              <ul className="list-none flex justify-end items-start flex-1 flex-col gap-4">
+                {navLinks.map((nav) => (
+                  <li
+                    key={nav.id}
+                    className={`font-poppins font-medium cursor-pointer text-[16px] ${
+                      active === nav.title ? "text-white" : "text-secondary"
+                    }`}
+                    onClick={() => {
+                      setToggle(!toggle);
+                      setActive(nav.title);
+                    }}
+                  >
+                    <a href={`#${nav.id}`}>{nav.title}</a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
       </div>
     </nav>

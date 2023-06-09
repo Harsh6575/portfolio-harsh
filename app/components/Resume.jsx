@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import React from "react";
 import { SectionWrapper } from "../hoc";
 import { styles } from "../styles";
@@ -7,15 +7,7 @@ import { client } from "../../sanity/lib/client";
 import { urlForFile } from "../../sanity/lib/image";
 import Loader from "./Loader";
 
-const query = groq`*[_type == "resume"] {
-  name,
-  pdf {
-    asset->{
-      _id,
-      url
-    }
-  }
-} | order(_createdAt asc)`;
+const query = groq`*[_type == "resume"] { name, pdf { asset->{ _id, url } } } | order(_createdAt asc)`;
 
 const Resume = () => {
   const [resume, setResume] = React.useState([]);
@@ -24,7 +16,6 @@ const Resume = () => {
     const fetchResume = async () => {
       try {
         const response = await client.fetch(query);
-
         if (response.length === 0) {
           throw new Error("No data found");
         }
@@ -37,9 +28,9 @@ const Resume = () => {
 
     const intervalId = setInterval(fetchResume, 1000);
 
-    fetchResume();
-
-    return () => clearInterval(intervalId); // Clear the interval when the component unmounts
+    return () => {
+      clearInterval(intervalId);
+    };
   }, []);
 
   const resumeUrl = resume.length > 0 ? resume[0]?.pdf?.asset?.url : null;
