@@ -15,7 +15,8 @@ const query = groq`*[_type == "hero"] {
       marks[]
       }
     }
-} | order(_createdAt asc)`;
+} | order(_createdAt asc)
+`;
 
 const screenHeightThreshold = 500; // Set the screen height threshold in pixels
 
@@ -61,88 +62,6 @@ const Hero = () => {
         }
 
         const paragraphs = response.map((hero) => {
-          // const descriptionElements = hero.body[0].children.map((child) => {
-          //   if (child._type === "span" && child.marks.includes("strong")) {
-          //     return (
-          //       <span
-          //         key={child._key}
-          //         // style={{ color: '#915eff' }}
-          //         className="text-myPurple"
-          //       >
-          //         {child.text}
-          //       </span>
-          //     );
-          //   } else if (
-          //     child._type === "span" &&
-          //     child.marks.includes("underline")
-          //   ) {
-          //     return (
-          //       <span
-          //       key={child._key}
-          //       // style={{ color: "#B6E305" }}
-          //       className="text-myGreen"
-          //       >
-          //         {child.text}
-          //       </span>
-          //     );
-          //   } else if (
-          //     child._type === "span" &&
-          //     child.marks.includes("strike-through")
-          //   ) {
-          //     return (
-          //       <span
-          //       key={child._key}
-          //       // style={{ color: "#5EFFE1" }}
-          //       className="text-myBlue"
-          //       >
-          //         {child.text}
-          //       </span>
-          //     );
-          //   } else if (
-          //     child._type === "span" &&
-          //     child.marks.includes("em")
-          //   ){
-          //     return (
-          //       <span
-          //       key={child._key}
-          //       // style={{ color: "#FF5E5E" }}
-          //       className="text-myRed"
-          //       >
-          //         {child.text}
-          //       </span>
-          //     );
-          //   }
-          //   else if (
-          //     child._type === "span" &&
-          //     child.marks.includes("code")
-          //   ){
-          //     return (
-          //       <span
-          //       key={child._key}
-          //       // style={{ color: "232C18" }}
-          //       className="text-myEbony"
-          //       >
-          //         {child.text}
-          //       </span>
-          //     );
-          //   }
-          //   else if (
-          //     child._type === "span" &&
-          //     child.marks.includes("highlight")
-          //   ){
-          //     return(
-          //       <span
-          //       key={child._key}
-          //       className="text-myViolet"
-          //       >
-          //         {child.text}
-          //       </span>
-          //     );
-          //   }
-          //   else {
-          //     return <span key={child._key}>{child.text}</span>;
-          //   }
-          // });
 
           const markClassMap = {
             strong: "text-myPurple",

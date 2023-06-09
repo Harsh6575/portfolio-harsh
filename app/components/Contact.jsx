@@ -6,6 +6,7 @@ import Link from "next/link";
 import { client } from "../../sanity/lib/client";
 import { styles } from "../styles";
 import { urlForImage } from "../../sanity/lib/image";
+import Image from "next/image";
 
 const query = groq`*[_type == "socialMedia"] {
   _createdAt,
@@ -27,7 +28,7 @@ const SocialMediaCard = ({ index, name, icon, url }) => {
           }}
           className="bg-newBlue rounded-[20px] py-5 px-12 min-h-[280px] flex justify-evenly items-center flex-col"
         >
-          <img src={icon} alt={name} className="w-32 h-32 object-contain" />
+          <Image src={icon} alt={name} className="w-32 h-32 object-contain" />
 
           <h3 className="text-white text-[20px] font-bold text-center">
             {name}
