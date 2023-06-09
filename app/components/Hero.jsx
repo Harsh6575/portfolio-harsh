@@ -20,6 +20,25 @@ const query = groq`*[_type == "hero"] {
 const Hero = () => {
   const [paragraphs, setParagraphs] = React.useState([]);
 
+  const screenHeightThreshold = 500; // Set the screen height threshold in pixels
+
+function applyVisibilityClass() {
+  const screenHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+  const element = document.getElementById('scroll-about'); 
+
+  if (screenHeight > screenHeightThreshold) {
+    element.classList.add('visible');
+    element.classList.remove('hidden');
+  } else {
+    element.classList.add('hidden');
+    element.classList.remove('visible');
+  }
+}
+
+// Call the function on page load or whenever the screen height changes
+window.addEventListener('load', applyVisibilityClass);
+window.addEventListener('resize', applyVisibilityClass);
+
   useEffect(() => {
     const fetchHero = async () => {
       try {
@@ -195,7 +214,7 @@ const Hero = () => {
           </div>
         </div>
       </div>
-      <div className="absolute xs:bottom-10 bottom-32 w-full flex justify-center items-center landscape:hidden">
+      <div className="absolute xs:bottom-10 bottom-32 w-full flex justify-center items-center" id="scroll-about">
         <a href="#about">
           <div className="w-[35px] h-[64px] rounded-3xl border-4 border-secondary flex justify-center items-start p-2">
             <motion.div
