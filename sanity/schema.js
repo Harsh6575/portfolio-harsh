@@ -9,6 +9,7 @@ import socialMedia from "./schemas/socialMedia";
 import tag from "./schemas/tag";
 import technologies from "./schemas/technologies";
 import style from "./tailwind/style";
+import colors from "./tailwind/colors";
 
 export const schema = {
   types: [
@@ -23,5 +24,6 @@ export const schema = {
     services,
     socialMedia,
     style,
+    colors
   ],
 }
