@@ -1,6 +1,6 @@
 "use client";
 import React, { use, useEffect } from "react";
-import {styles} from '../styles';
+import { styles } from "../styles";
 import { motion } from "framer-motion";
 import { groq } from "next-sanity";
 import { client } from "../../sanity/lib/client";
@@ -17,27 +17,31 @@ const query = groq`*[_type == "hero"] {
     }
 } | order(_createdAt asc)`;
 
-const Hero = () => {
-  const [paragraphs, setParagraphs] = React.useState([]);
-
-  const screenHeightThreshold = 500; // Set the screen height threshold in pixels
+const screenHeightThreshold = 500; // Set the screen height threshold in pixels
 
 function applyVisibilityClass() {
-  const screenHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
-  const element = document.getElementById('scroll-about'); 
+  const screenHeight =
+    window.innerHeight ||
+    document.documentElement.clientHeight ||
+    document.body.clientHeight;
+  const element = document.getElementById("scroll-about");
 
   if (screenHeight > screenHeightThreshold) {
-    element.classList.add('visible');
-    element.classList.remove('hidden');
+    element.classList.add("visible");
+    element.classList.remove("hidden");
   } else {
-    element.classList.add('hidden');
-    element.classList.remove('visible');
+    element.classList.add("hidden");
+    element.classList.remove("visible");
   }
 }
 
 // Call the function on page load or whenever the screen height changes
-window.addEventListener('load', applyVisibilityClass);
-window.addEventListener('resize', applyVisibilityClass);
+window.addEventListener("load", applyVisibilityClass);
+window.addEventListener("resize", applyVisibilityClass);
+
+const Hero = () => {
+  const [paragraphs, setParagraphs] = React.useState([]);
+
 
   useEffect(() => {
     const fetchHero = async () => {
@@ -65,8 +69,8 @@ window.addEventListener('resize', applyVisibilityClass);
           //     child.marks.includes("underline")
           //   ) {
           //     return (
-          //       <span 
-          //       key={child._key} 
+          //       <span
+          //       key={child._key}
           //       // style={{ color: "#B6E305" }}
           //       className="text-myGreen"
           //       >
@@ -78,8 +82,8 @@ window.addEventListener('resize', applyVisibilityClass);
           //     child.marks.includes("strike-through")
           //   ) {
           //     return (
-          //       <span 
-          //       key={child._key} 
+          //       <span
+          //       key={child._key}
           //       // style={{ color: "#5EFFE1" }}
           //       className="text-myBlue"
           //       >
@@ -91,15 +95,15 @@ window.addEventListener('resize', applyVisibilityClass);
           //     child.marks.includes("em")
           //   ){
           //     return (
-          //       <span 
-          //       key={child._key} 
+          //       <span
+          //       key={child._key}
           //       // style={{ color: "#FF5E5E" }}
           //       className="text-myRed"
           //       >
           //         {child.text}
           //       </span>
           //     );
-          //   }  
+          //   }
           //   else if (
           //     child._type === "span" &&
           //     child.marks.includes("code")
@@ -133,31 +137,30 @@ window.addEventListener('resize', applyVisibilityClass);
           // });
 
           const markClassMap = {
-            strong: 'text-myPurple',
-            underline: 'text-myGreen',
-            'strike-through': 'text-myBlue',
-            em: 'text-myRed',
-            code: 'text-myEbony',
-            highlight: 'text-myViolet',
+            strong: "text-myPurple",
+            underline: "text-myGreen",
+            "strike-through": "text-myBlue",
+            em: "text-myRed",
+            code: "text-myEbony",
+            highlight: "text-myViolet",
           };
-          
+
           const descriptionElements = hero.body[0].children.map((child) => {
-            let className = '';
-          
-            if (child._type === 'span' && child.marks.length > 0) {
+            let className = "";
+
+            if (child._type === "span" && child.marks.length > 0) {
               className = child.marks
                 .map((mark) => markClassMap[mark])
                 .filter((className) => !!className)
-                .join(' ');
+                .join(" ");
             }
-          
+
             return (
               <span key={child._key} className={className}>
                 {child.text}
               </span>
             );
           });
-          
 
           let currentParagraph = [];
           const generatedParagraphs = [];
@@ -214,7 +217,10 @@ window.addEventListener('resize', applyVisibilityClass);
           </div>
         </div>
       </div>
-      <div className="absolute xs:bottom-10 bottom-32 w-full flex justify-center items-center" id="scroll-about">
+      <div
+        className="absolute xs:bottom-10 bottom-32 w-full flex justify-center items-center"
+        id="scroll-about"
+      >
         <a href="#about">
           <div className="w-[35px] h-[64px] rounded-3xl border-4 border-secondary flex justify-center items-start p-2">
             <motion.div

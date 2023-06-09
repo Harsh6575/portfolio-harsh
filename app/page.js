@@ -5,6 +5,7 @@ import About from './components/About';
 import Tech from './components/Tech';
 import Contact from './components/Contact';
 import Projects from './components/Projects';
+import GoToTopButton from './components/GoToTopButton';
 
 export default function Home() {
   return (
@@ -18,6 +19,7 @@ export default function Home() {
       <Tech />
       <Projects />
       <Contact />
+      <GoToTopButton />
       {/* <Feedbacks />
       <div className="relative z-0">
         <Contact />
