@@ -6,6 +6,7 @@ import Tech from './components/Tech';
 import Contact from './components/Contact';
 import Projects from './components/Projects';
 import GoToTopButton from './components/GoToTopButton';
+import Resume from './components/Resume';
 
 export default function Home() {
   return (
@@ -18,6 +19,7 @@ export default function Home() {
       {/* <Experience /> */}
       <Tech />
       <Projects />
+      <Resume />
       <Contact />
       {/* <GoToTopButton /> */}
       {/* <Feedbacks />

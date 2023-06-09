@@ -5,17 +5,17 @@ export default {
     fields: [
         {
             name: 'name',
-            title: 'Social Media Name',
+            title: 'Name',
             type: 'string',
         },
         {
             name: 'url',
-            title: 'Social Media URL',
+            title: 'URL',
             type: 'url',
         },
         {
             name: 'icon',
-            title: 'Social Media Icon',
+            title: 'Icon',
             type: 'image',
             options: {
                 hotspot: true,
