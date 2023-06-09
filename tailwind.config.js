@@ -22,7 +22,8 @@ module.exports = {
         "myEbony":"#232C18",
         "myViolet":"#5C038C",
         "myNeon":"#B6E305",
-        "myWhitish":"#EEEEEE"        
+        "myWhitish":"#EEEEEE",
+        "newBlue":"#000C66"
       },
       boxShadow: {
         card: "0px 35px 120px -15px #211e35",

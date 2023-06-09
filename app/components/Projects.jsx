@@ -102,8 +102,6 @@ const Projects = () => {
     fetchProjects();
   }, [projects]);
 
-  console.log(projects);
-
   return (
     <>
       <div>
