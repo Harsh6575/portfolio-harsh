@@ -19,7 +19,7 @@ export default function Home() {
       <Tech />
       <Projects />
       <Contact />
-      <GoToTopButton />
+      {/* <GoToTopButton /> */}
       {/* <Feedbacks />
       <div className="relative z-0">
         <Contact />

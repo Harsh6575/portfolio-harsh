@@ -19,29 +19,37 @@ const query = groq`*[_type == "hero"] {
 
 const screenHeightThreshold = 500; // Set the screen height threshold in pixels
 
-function applyVisibilityClass() {
-  const screenHeight =
-    window.innerHeight ||
-    document.documentElement.clientHeight ||
-    document.body.clientHeight;
-  const element = document.getElementById("scroll-about");
-
-  if (screenHeight > screenHeightThreshold) {
-    element.classList.add("visible");
-    element.classList.remove("hidden");
-  } else {
-    element.classList.add("hidden");
-    element.classList.remove("visible");
-  }
-}
-
-// Call the function on page load or whenever the screen height changes
-window.addEventListener("load", applyVisibilityClass);
-window.addEventListener("resize", applyVisibilityClass);
-
 const Hero = () => {
   const [paragraphs, setParagraphs] = React.useState([]);
 
+  
+  useEffect(() => {
+    const applyVisibilityClass = () => {
+      if (typeof window !== "undefined") {
+        const screenHeight =
+          window.innerHeight ||
+          document.documentElement.clientHeight ||
+          document.body.clientHeight;
+        const element = document.getElementById("scroll-about");
+
+        if (screenHeight > screenHeightThreshold) {
+          element.classList.add("visible");
+          element.classList.remove("hidden");
+        } else {
+          element.classList.add("hidden");
+          element.classList.remove("visible");
+        }
+      }
+    };
+
+    applyVisibilityClass();
+
+    window.addEventListener("resize", applyVisibilityClass);
+
+    return () => {
+      window.removeEventListener("resize", applyVisibilityClass);
+    };
+  }, []);
 
   useEffect(() => {
     const fetchHero = async () => {
