@@ -18,6 +18,7 @@ const query = groq`*[_type == "about"] {
 } | order(_createdAt asc)`;
 
 const About = () => {
+  
   const [paragraphs, setParagraphs] = useState([]);
 
   const generateParagraphs = useCallback((response) => {

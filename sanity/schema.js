@@ -10,6 +10,7 @@ import tag from "./schemas/tag";
 import technologies from "./schemas/technologies";
 import style from "./tailwind/style";
 import colors from "./tailwind/colors";
+import certificates from "./schemas/certificates";
 
 export const schema = {
   types: [
@@ -21,6 +22,7 @@ export const schema = {
     tag,
     project,
     resume,
+    certificates,
     services,
     socialMedia,
     style,
