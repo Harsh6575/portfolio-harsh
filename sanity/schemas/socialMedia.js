@@ -16,10 +16,12 @@ export default {
         {
             name: 'icon',
             title: 'Icon',
-            type: 'image',
-            options: {
-                hotspot: true,
-            }
+            type: 'string',
+        },
+        {
+            name: 'iconstyle',
+            title: 'Icon Style',
+            type: 'string',
         }
     ]
 }
