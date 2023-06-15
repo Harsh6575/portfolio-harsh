@@ -28,8 +28,6 @@ const CertificateCard = ({
 
     const imageurl = urlForImage(image).url();
 
-    console.log(description);
-
     const generateParagraphs = useCallback((response) => {
         const markClassMap = {
           strong: "text-myPurple",
