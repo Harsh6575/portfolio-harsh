@@ -12,7 +12,7 @@ const TechnologyCard = ({ index, name, icon }) => {
   icon = urlBuilder(client).image(icon).url();
 
   return (
-    <div className="xs:w-[250px] w-full">
+    <div className="xs:w-[100px] w-full">
       <div className="w-full green-pink-gradient p-[1px] rounded-[20px] shadow-card">
         <div
           options={{
