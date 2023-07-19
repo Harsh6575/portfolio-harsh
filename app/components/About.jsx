@@ -104,7 +104,7 @@ const About = () => {
       </div>
       <div className="mt-20 flex flex-wrap gap-10">
         {paragraphs.map((paragraph, index) => (
-          <div key={index} className="flex flex-col gap-4">
+          <div key={index} className="flex flex-col gap-4 text-justify">
             {paragraph}
           </div>
         ))}

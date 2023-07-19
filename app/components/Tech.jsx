@@ -12,7 +12,7 @@ const TechnologyCard = ({ index, name, icon }) => {
   icon = urlBuilder(client).image(icon).url();
 
   return (
-    <div className="xs:w-[100px] w-full">
+    <div className="sm:w-[250px] w-[150px]">
       <div className="w-full green-pink-gradient p-[1px] rounded-[20px] shadow-card">
         <div
           options={{
@@ -63,7 +63,7 @@ const Tech = () => {
         <p className={styles.sectionSubText}>My Familiar</p>
         <h2 className={styles.sectionHeadText}>Technologies.</h2>
       </div>
-      <div className="mt-20 flex flex-wrap gap-10">
+      <div className="mt-20 flex flex-wrap gap-10 items-center justify-center">
         {technologies.map((technology, index) => (
           <TechnologyCard key={technology.name} index={index} {...technology} />
         ))}

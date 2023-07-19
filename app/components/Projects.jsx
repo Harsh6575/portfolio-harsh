@@ -2,7 +2,6 @@
 import React, { useEffect } from "react";
 import { SectionWrapper } from "../hoc";
 import { Tilt } from "react-tilt";
-import Image from "next/image";
 import { styles } from "../styles";
 import { groq } from "next-sanity";
 import { client } from "../../sanity/lib/client";
@@ -123,7 +122,7 @@ const Projects = () => {
         <p className={styles.sectionSubText}>Here are some of my</p>
         <h2 className={styles.sectionHeadText}>Projects.</h2>
       </div>
-      <div className="mt-20 flex flex-wrap gap-10">
+      <div className="mt-20 flex flex-wrap gap-10 items-center">
         {projects.map((project, index) => (
           <ProjectCard key={project.name} index={index} {...project} />
         ))}

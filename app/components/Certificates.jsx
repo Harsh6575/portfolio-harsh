@@ -83,8 +83,8 @@ const CertificateCard = ({
   return (
     <div className="max-w-md bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
       <img className="rounded-t-lg" src={imageurl} alt={title} />
-      <div className="p-5">
-        <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+      <div className="p-5 flex items-center justify-center flex-col gap-3">
+        <h5 className="mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
             {title} from {from}
         </h5>
         {/* <div className="mb-3 font-normal text-gray-700 dark:text-gray-400 text-justify">
@@ -147,7 +147,7 @@ const Certificates = () => {
         <p className={styles.sectionSubText}>My</p>
         <h2 className={styles.sectionHeadText}>Certificates.</h2>
       </div>
-      <div className="mt-20 flex flex-wrap gap-10">
+      <div className="mt-20 flex flex-wrap gap-10 items-center justify-center">
         {certificates.map((certificate, index) => (
           <CertificateCard key={index} index={index} {...certificate} />
         ))}
