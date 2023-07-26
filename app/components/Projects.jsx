@@ -73,15 +73,24 @@ const ProjectCard = ({
       </div>
       <div className="mt-5">
         <h3 className="text-white font-bold text-[24px]">{name}</h3>
-        <p className="mt-2 text-secondary text-[14px] text-justify">{description}</p>
+        {/* <p className="mt-2 text-secondary text-[14px] text-justify">{description}</p> */}
+        {description && (
+          <div className="mt-2">
+            {description.map((paragraph, index) => (
+              <p
+                key={index}
+                className="mt-4 text-secondary text-[14px] text-justify"
+              >
+                {paragraph}
+              </p>
+            ))}
+          </div>
+        )}
       </div>
       {tags && (
         <div className="mt-4 flex flex-wrap gap-2">
           {tags.map(({ name, color }) => (
-            <p
-              key={`${name}-${tag.name}`}
-              className={`text-[14px] ${color}`}
-            >
+            <p key={`${name}-${tag.name}`} className={`text-[14px] ${color}`}>
               #{name}
             </p>
           ))}
@@ -122,7 +131,7 @@ const Projects = () => {
         <p className={styles.sectionSubText}>Here are some of my</p>
         <h2 className={styles.sectionHeadText}>Projects.</h2>
       </div>
-      <div className="mt-20 flex flex-wrap gap-10 items-center">
+      <div className="mt-20 flex flex-wrap gap-10 items-start justify-center">
         {projects.map((project, index) => (
           <ProjectCard key={project.name} index={index} {...project} />
         ))}
